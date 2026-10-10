@@ -47,7 +47,22 @@ All data is local and synthetic; conversations live in browser memory and reset 
 
 ## Deploy
 
-For Vercel, import this repository, select Next.js, and use the defaults (`npm run build`, framework-managed output). No environment variables are needed. Or deploy on any Node host: run `npm ci && npm run build`, then `npm start`. Set `PORT` if your host requires a custom port. The chat endpoint requires a Node/serverless runtime; static-only export is not supported.
+### Automatic deployment from GitHub (recommended)
+
+1. Open https://vercel.com/new and sign in with the GitHub account that owns this repository.
+2. If Vercel asks for GitHub repository access, grant access to `arongreenburg-dev/household-coo-amazon`. You can select just this repository.
+3. Find `household-coo-amazon` in the import list and click **Import**.
+4. Name the project `household-coo` (or another available name). Confirm **Framework Preset: Next.js** and **Root Directory: `./`**. Leave the build and output settings at their defaults. No environment variables are required.
+5. Click **Deploy**. When it finishes, open **Visit** and copy the generated website address.
+6. Verify Family Radar appears, **Scan demo sources** reports ten notices and eight items, and chat answers “What is most urgent?” followed by “Why is that important?”
+
+Vercel's Git integration should use `main` as the production branch. Pushes to `main` then trigger builds and update the same production address; other branches can produce preview deployments. Confirm this under the project's Git settings if updates do not appear. A failed build does not replace the last successful production deployment; inspect the deployment build logs.
+
+The site contains synthetic data only and requires no authentication. Its mock chat and scan endpoints run on the server; no account connection or secret values are included. Cloud Shell does not have to keep running once this deployment is verified. Conversations are temporary and reset on page reload.
+
+### Other Node hosts
+
+Run `npm ci && npm run build`, then `npm start`. Set `PORT` if your host requires a custom port. The chat and scan endpoints require a Node/serverless runtime; static-only export is not supported.
 
 ## Hackathon presentation
 
