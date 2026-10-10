@@ -9,3 +9,21 @@ test('main multi-turn demo answers priority, why, conflicts, tonight, and deferr
 test('unsupported requests do not pretend to execute external actions',async()=>{assert.match((await new MockAgentService().reply([{role:'user',content:'Book a flight to Paris'}])).content,/cannot send messages/);});
 
 test('demo ingestion scans source fixtures, preserves provenance and skips informational notices',async()=>{const { scanSources }=await import('../src/lib/sources');const result=await scanSources();assert.equal(result.documentsScanned,10);assert.equal(result.items.length,8);assert.equal(result.informational,2);assert.deepEqual(result.provenance.find(p=>p.sourceId==='school-form')?.itemIds,['permission']);assert.equal(analyzeHousehold(result.items).conflicts.length,1);});
+
+test('chat reflects saved decisions and explicit assignments resolve the conflict',async()=>{
+ const {applyDecisions,validateDecisions,inferAssignment}=await import('../src/lib/decisions');
+ const agent=new MockAgentService();
+ const update=await agent.reply([{role:'user',content:'Alex can take Noah to the dentist'}]);
+ assert.equal(update.decisions?.[0].resource,'Alex');
+ const state=applyDecisions(items,validateDecisions([{id:'dentist',resource:'Alex'},{id:'permission',completed:true}]));
+ assert.equal(analyzeHousehold(state).conflicts.length,0);
+ assert.match((await agent.reply([{role:'user',content:'What is most urgent?'}],state)).content,/electricity bill/);
+ assert.doesNotMatch((await agent.reply([{role:'user',content:'What is most urgent?'}],state)).content,/permission form/);
+ assert.match((await agent.reply([{role:'user',content:'What conflicts do we have?'}],state)).content,/no overlapping/);
+ assert.equal(inferAssignment('Could Alex take Noah?'),null);
+ assert.equal(inferAssignment('Alex cannot take Noah'),null);
+ assert.equal(inferAssignment('What if Alex can take Noah'),null);
+ assert.throws(()=>validateDecisions([{id:'bill',resource:'Alex'}]));
+ assert.throws(()=>validateDecisions([{id:'dentist',resource:'Stranger'}]));
+ assert.throws(()=>validateDecisions([{id:'bill',completed:true},{id:'bill',completed:false}]));
+});

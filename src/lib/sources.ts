@@ -16,11 +16,11 @@ export const demoSources:SourceDocument[] = [
 // A real Extractor must infer obligations from SourceDocument.body and preserve provenance.
 const fixtureExtractions:Record<string,string[]>={'school-form':['permission'],'dental-notice':['dentist'],'soccer-calendar':['soccer'],'energy-bill':['bill'],'field-trip-calendar':['museum'],'party-invite':['birthday'],'home-checklist':['filter'],'library-reminder':['library'],'newsletter':[],'receipt':[]};
 export interface SourceConnector {listDocuments():Promise<SourceDocument[]>}
-export interface ObligationExtractor {extract(document:SourceDocument):Promise<HouseholdItem[]>}
+export interface ObligationExtractor {extract(document:SourceDocument):Promise<HouseholdItem[]>;extractDocuments?(documents:SourceDocument[]):Promise<{sourceId:string;items:HouseholdItem[]}[]>}
 export class DemoSourceConnector implements SourceConnector {async listDocuments(){return demoSources;}}
 export class MockObligationExtractor implements ObligationExtractor {async extract(document:SourceDocument){return (fixtureExtractions[document.id]??[]).map(id=>({...items.find(i=>i.id===id)!}));}}
 export function extractedItemsFor(source:SourceDocument){return (fixtureExtractions[source.id]??[]).map(id=>items.find(i=>i.id===id)!);}
 export async function scanSources(connector:SourceConnector=new DemoSourceConnector(),extractor:ObligationExtractor=new MockObligationExtractor()) {
- const documents=await connector.listDocuments();const extracted=await Promise.all(documents.map(async document=>({sourceId:document.id,items:await extractor.extract(document)})));
+ const documents=await connector.listDocuments();const extracted=extractor.extractDocuments?await extractor.extractDocuments(documents):await Promise.all(documents.map(async document=>({sourceId:document.id,items:await extractor.extract(document)})));
  return {items:extracted.flatMap(result=>result.items),documentsScanned:documents.length,informational:extracted.filter(result=>!result.items.length).length,provenance:extracted.map(result=>({sourceId:result.sourceId,itemIds:result.items.map(item=>item.id)}))};
 }

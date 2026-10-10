@@ -462,3 +462,19 @@ nav button { min-height: 46px; }
 .chat-bottom form { background: #fff; border-color: #9aa5b0; }
 .chat-bottom input { color: #20262e; }
 .chat-bottom input::placeholder { color: #49515a; }
+.saved-plan { margin: 22px 0 14px; padding: 16px; display: flex; gap: 16px; justify-content: space-between; align-items: center; background: #fff; border: 1px solid var(--border); border-radius: 9px; }
+.saved-plan strong { display: block; font-size: 16px; }
+.saved-plan span { display: block; font-size: 14px; color: var(--muted); margin-top: 4px; }
+.saved-plan button, .resolve-button { border: 1px solid #9aa5b0; background: white; border-radius: 7px; min-height: 44px; padding: 8px 12px; font-size: 14px; }
+.conflict-action { flex-wrap: wrap; }
+.conflict-action .resolve-button { display: block; padding: 8px 12px; color: #20262e; border: 1px solid #9aa5b0; }
+.resolved-note { display: flex; gap: 10px; padding: 18px; background: #fff; border: 1px solid var(--border); border-radius: 9px; font-size: 16px; }
+.assignment-controls { margin: 20px 0; padding: 16px; background: white; border: 1px solid var(--border); border-radius: 8px; }
+.assignment-controls label { font-size: 16px; font-weight: 600; display: block; margin-bottom: 10px; }
+.assignment-controls select { min-height: 44px; width: 100%; border: 1px solid #9aa5b0; padding: 8px 12px; border-radius: 6px; background: #fff; font-size: 16px; }
+.assignment-controls p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-top: 10px; }
+.completion-button { display: flex; align-items: center; gap: 8px; border: 1px solid #9aa5b0; background: white; border-radius: 7px; padding: 12px; min-height: 44px; font-size: 16px; margin-bottom: 18px; }
+.completed-list { display: grid; gap: 8px; margin-bottom: 20px; }
+.completed-list button { display: flex; gap: 10px; align-items: center; text-align: left; background: white; border: 1px solid var(--border); border-radius: 7px; min-height: 44px; padding: 12px; font-size: 14px; }
+.completed-list button span { margin-left: auto; font-size: 12px; color: var(--muted); }
+@media(max-width:640px){.saved-plan{flex-direction:column;align-items:stretch}.completed-list button{flex-wrap:wrap}}
