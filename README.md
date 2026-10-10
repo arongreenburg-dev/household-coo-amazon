@@ -23,24 +23,27 @@ npm start
 ## Demo flow
 
 1. Open Family Radar: two urgent obligations, one scheduling conflict, four upcoming events, preparation reminders, and two tasks that can wait.
-2. Ask “What does our family need to deal with this week?”
-3. Follow up with “What is most urgent?” then “Why is that important?” The agent explains the prior recommendations and shows source notices.
-4. Ask “What conflicts do we have?” and “What do I need to do tonight?”
-5. Ask “What can wait?” Click any radar card for its source, rationale, and next action.
-6. Explore This week and Household sources, filter by family member, or reset the conversation.
+2. Click **Scan demo sources**. The simulated scan reads ten source fixtures (six emails, two calendar entries, two documents), produces eight household items, and skips two informational notices. Browse Household sources and click a notice to see its original message and extracted recommendation.
+3. Ask “What does our family need to deal with this week?”
+4. Follow up with “What is most urgent?” then “Why is that important?” The agent explains the prior recommendations and shows source notices.
+5. Ask “What conflicts do we have?” and “What do I need to do tonight?”
+6. Ask “What can wait?” Click any radar card for its source, rationale, and next action.
+7. Explore This week and Household sources, filter by family member, or reset the conversation.
 
-The Morgan household includes parents Alex and Jamie, Ella (10), and Noah (7). Eight synthetic records cover school emails, a permission form, calendar events, a dental notice, a utility bill, soccer, a birthday invitation, and home/library reminders. Recommended actions are suggestions: the app does not send messages, pay bills, or alter bookings.
+The Morgan household includes parents Alex and Jamie, Ella (10), and Noah (7). Eight synthetic household items cover school emails, a permission form, calendar events, a dental notice, a utility bill, soccer, a birthday invitation, and home/library reminders. Recommended actions are suggestions: the app does not send messages, pay bills, or alter bookings.
 
 ## Architecture
 
 - `src/lib/household.ts`: typed synthetic source notices and demo date.
+- `src/lib/sources.ts`: synthetic inbox/calendar/document fixtures, `SourceConnector` and `ObligationExtractor` interfaces, and a simulated ingestion pipeline with source-to-item provenance. The mock extractor returns prepared fixture results; it does not perform natural-language extraction. Replace the connector to fetch authorized real sources and the extractor to process their contents.
+- `src/app/api/scan/route.ts`: runs the demo ingestion pipeline and returns household items plus scan counts.
 - `src/lib/reasoning.ts`: UI-independent deadline grouping and interval overlap detection for shared parent assignments.
 - `src/lib/agent.ts`: `AgentService` interface and deterministic `MockAgentService`. The mock recognizes supported conversational intents and uses preceding assistant recommendations for follow-up explanations.
 - `src/app/api/chat/route.ts`: validated, server-side chat endpoint. Replace the `agent` implementation with an `AgentService` provider to add a real LLM later; keep credentials and calls server-side. Pass local source records and conversation history to your provider and validate its output.
 - `src/components/dashboard.tsx`: responsive dashboard, family filters, notice details, navigation, chat, loading/error states, and source citations.
 - `tests/agent.test.ts`: meaningful checks for classification, conflict resolution, main conversational flow, and unsupported actions.
 
-All data is local and synthetic; conversations live in browser memory and reset on reload. The mock is a constrained simulation, not a general-purpose model or Alexa integration. Avoid entering real sensitive household data. No data connector or actual Alexa skill is included.
+All data is local and synthetic; conversations live in browser memory and reset on reload. The mock is a constrained simulation, not a general-purpose model or Alexa integration. Avoid entering real sensitive household data. No real account connector or actual Alexa skill is included. The demo connector reads local fixtures only. Gmail, Google Calendar, Drive, drafts, and attachments are not accessed. Real connections should be optional: keep the demo available without signing in, and add an authorized read-only connection flow as a separate integration.
 
 ## Deploy
 
