@@ -449,3 +449,16 @@ nav button { min-height: 46px; }
 .extracted-item small { display: block; font-size: 14px; line-height: 1.7; margin-top: 6px; }
 .no-action { margin-bottom: 18px; }
 @media(max-width:640px) { .scan-bar { align-items: stretch; flex-direction: column; } .scan-summary { align-items: flex-start; } }
+
+/* Neutral chat surfaces keep message text distinct from the green brand accents. */
+.chat-panel { color: #20262e; border-color: #cbd2d9; }
+.chat-header, .chat-context { background: #f6f7f9; border-color: #dce1e6; }
+.chat-header p, .chat-context, .message-label, .message details,
+.prompt-label, .chat-disclaimer { color: #49515a; }
+.message.assistant { background: #fff; color: #20262e; border-color: #cbd2d9; border-left: 3px solid #326653; }
+.message details { border-color: #dce1e6; }
+.prompts button { color: #20262e; background: #fff; border-color: #cbd2d9; }
+.prompts svg { color: #49515a; }
+.chat-bottom form { background: #fff; border-color: #9aa5b0; }
+.chat-bottom input { color: #20262e; }
+.chat-bottom input::placeholder { color: #49515a; }
