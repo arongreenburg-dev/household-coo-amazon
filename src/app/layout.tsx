@@ -8,4 +8,12 @@ import '@fontsource/manrope/600.css';
 import '@fontsource/manrope/700.css';
 import './globals.css';
 export const metadata:Metadata={title:'Household COO · A little less mental load',description:'A simulated Alexa+ experience that brings your family’s week into focus.'};
-export default function RootLayout({children}:{children:React.ReactNode}) {return <html lang="en"><body>{children}</body></html>}
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // Browser extensions can add attributes to these outer elements before hydration.
+  // Suppression is limited to this level; app content retains hydration checks.
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning>{children}</body>
+    </html>
+  );
+}
