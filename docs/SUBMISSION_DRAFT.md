@@ -35,7 +35,7 @@ Current default mode uses fixture-based extraction and a deterministic agent. Am
 
 ### 1. Tools, APIs, SDKs used and purpose
 
-Next.js and TypeScript for the browser app and server endpoints; React for the dashboard and chat; Lucide for icons; locally bundled DM Sans and Manrope fonts; Node's test runner and tsx for reasoning/provider tests; Playwright with Chromium for browser verification; Codex for development assistance; GitHub for version control; Google Cloud Shell for the entrant's initial preview; Vercel for hosted deployment connected to GitHub. The AWS SDK for JavaScript / Bedrock Runtime is implemented for optional real extraction and chat, but live usage is pending verification. We have not used Alexa hardware, an Alexa service API, an MCP integration, Bee or Ring.
+Next.js and TypeScript for the browser app and server endpoints; React for the dashboard and chat; Lucide for icons; locally bundled DM Sans and Manrope fonts; Node's test runner and tsx for reasoning/provider tests; Playwright with Chromium for browser verification; Codex for development assistance; GitHub for version control; Google Cloud Shell for the entrant's initial preview; Vercel for hosted deployment connected to GitHub. The AWS SDK for JavaScript / Bedrock Runtime is implemented for optional real extraction and chat, but live usage is pending verification. The official MCP TypeScript SDK provides a real self-hosted Streamable HTTP server at `/api/mcp` and a browser MCP client, using protocol `2025-11-25`; tools reuse household reasoning and local decisions. We have not used Alexa hardware, an Alexa service API, Bee or Ring. See `docs/MCP.md` for implementation and protocol testing.
 
 ### 2. What worked well
 

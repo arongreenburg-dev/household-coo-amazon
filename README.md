@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:3000. No authentication, AWS, MCP, API key, or external AI service is required in the default mock mode. Optional Amazon Bedrock mode uses paid model inference and requires secure server-side configuration; see [Bedrock setup](docs/BEDROCK_SETUP.md). The demo uses a fixed week, May 18–24, 2026, so deadlines remain consistent whenever it is presented. Fonts have system fallbacks.
+Open http://localhost:3000. No authentication, AWS, API key, or external AI service is required in the default mock mode. Optional Amazon Bedrock mode uses paid model inference and requires secure server-side configuration; see [Bedrock setup](docs/BEDROCK_SETUP.md). The app self-hosts MCP at `/api/mcp`; chat and plan changes use a real Streamable HTTP client. See [MCP implementation and manual tests](docs/MCP.md). The demo uses a fixed week, May 18–24, 2026, so deadlines remain consistent whenever it is presented. Fonts have system fallbacks.
 
 ```sh
 npm test
@@ -45,6 +45,10 @@ The Morgan household includes parents Alex and Jamie, Ella (10), and Noah (7). E
 - `src/lib/services.ts`: selects mock or Bedrock using server environment configuration.
 - `src/lib/agent.ts`: `AgentService` interface and deterministic `MockAgentService`. The mock recognizes supported conversational intents and uses preceding assistant recommendations for follow-up explanations.
 - `src/app/api/chat/route.ts`: validated, server-side chat endpoint. Replace the `agent` implementation with an `AgentService` provider to add a real LLM later; keep credentials and calls server-side. Pass local source records and conversation history to your provider and validate its output.
+- `src/app/api/mcp/route.ts`: stateless Streamable HTTP endpoint using the official MCP SDK (protocol `2025-11-25`).
+- `src/lib/mcp/server.ts`: tools that reuse household reasoning, decisions, and the selected agent.
+- `src/lib/mcp/client.ts`: browser MCP client for plan loading, chat, reassignment, completion, and undo.
+- `tests/mcp.test.ts`: real protocol, official-client interoperability, read/write tools, isolation, and validation tests.
 - `src/components/dashboard.tsx`: responsive dashboard, family filters, notice details, navigation, chat, loading/error states, and source citations.
 - `tests/agent.test.ts`: meaningful checks for classification, conflict resolution, main conversational flow, and unsupported actions.
 
@@ -81,4 +85,4 @@ Show the fixed-week dashboard, ask the core question, explain the dentist/soccer
 - [Observed development friction](docs/FRICTION_LOG.md)
 - [Bedrock setup and live verification checklist](docs/BEDROCK_SETUP.md)
 
-The Alexa+ submission uses the permitted simulated-browser-experience path. We have not connected real email, calendar, Drive, Alexa hardware, or MCP. AWS mini-challenge eligibility remains pending live Bedrock verification. An open-source license or the required private judge access is still outstanding; no license has been selected automatically.
+The Alexa+ submission uses the permitted simulated-browser-experience path. A real self-hosted MCP server and simulated Alexa+ MCP client are implemented using Streamable HTTP. We have not connected real email, calendar, Drive, or Alexa hardware. See [MCP documentation](docs/MCP.md). AWS mini-challenge eligibility remains pending live Bedrock verification. An open-source license or the required private judge access is still outstanding; no license has been selected automatically.
