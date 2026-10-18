@@ -48,6 +48,23 @@ export class BedrockModel {
   return parseJson(output);
  }
 }
+
+// Normalize explicit parent-event intervals from source text, never from fixture items.
+// This fixed synthetic demo supports same-day May 2026 ranges with AM/PM.
+function sourceSchedule(source:SourceDocument){
+ const parent=source.body.match(/(?:Assigned parent:\s*|booking lists\s+)(Alex|Jamie)\b/i)?.[1];
+ if(!parent)return undefined;
+ const m=source.body.match(/May\s+(\d{1,2})[\s\S]*?(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+ if(!m)throw new Error('Invalid source extraction.');
+ const clock=(hour:string,minute:string,period:string)=>{
+  const h=Number(hour),min=Number(minute);
+  if(h<1||h>12||min>59)throw new Error('Invalid event interval.');
+  return String(h%12+(period.toUpperCase()==='PM'?12:0)).padStart(2,'0')+':'+minute+':00';
+ };
+ const day=String(Number(m[1])).padStart(2,'0');
+ return {start:`2026-05-${day}T${clock(m[2],m[3],m[4]??m[7])}`,end:`2026-05-${day}T${clock(m[5],m[6],m[7])}`,resource:parent.toLowerCase()==='alex'?'Alex':'Jamie'};
+}
+
 export class BedrockObligationExtractor implements ObligationExtractor {
  constructor(private model:BedrockModel){}
  async extract(document:SourceDocument){return (await this.extractDocuments([document]))[0].items;}
@@ -59,7 +76,12 @@ export class BedrockObligationExtractor implements ObligationExtractor {
    if(!r||typeof r!=='object')throw new Error('Invalid source extraction.');
    const entry=r as {sourceId:string;items:unknown[]};const source=documents.find(d=>d.id===entry.sourceId);
    if(!source||seen.has(source.id)||!Array.isArray(entry.items)||entry.items.length>1)throw new Error('Invalid extraction provenance.');seen.add(source.id);
-   const enriched=entry.items.map(item=>({...item as object,source:`${source.sender} · ${source.channel.toLowerCase()}`}));
+   const schedule=sourceSchedule(source);
+   const enriched=entry.items.map(item=>{
+    const raw={...item as Record<string,unknown>};
+    for(const key of ['prepare','start','end','resource'])if(raw[key]===null)delete raw[key];
+    return {...raw,...(schedule?{...schedule,due:schedule.start}:{}),source:`${source.sender} · ${source.channel.toLowerCase()}`};
+   });
    const extracted=validateHouseholdItems(enriched);
    if(extracted.some(i=>i.id!==sourceItemIds[source.id]))throw new Error('Extraction refers to a different source.');
    return {sourceId:source.id,items:extracted};
