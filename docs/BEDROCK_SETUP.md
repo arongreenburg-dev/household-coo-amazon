@@ -4,7 +4,7 @@ The application now includes server-side Amazon Bedrock SDK integration for **bo
 
 **Status (October 18, 2026):** Live production scan and chat verified at https://household-coo-amazon.vercel.app/ using Amazon Nova Micro (`amazon.nova-micro-v1:0`) in `us-east-1`. Ten synthetic sources produced eight obligations and skipped two informational notices. Requiring complete appointment intervals restored detection of the 15-minute overlap; an explicit Alex dentist assignment resolved the dashboard conflict. Chat supplied source citations. Authentication fix: `539d8bc`; extraction validation: `303c901`; regression case: `2bf661f`.
 
-Live model wording and prioritization vary. Preparation details may remain in descriptions instead of dedicated preparation cards. The conflict follow-up still described overlapping event times as a conflict despite the reassignment; this response needs correction before recording. Remaining checks include completed-task follow-up and full multi-turn recording. The existing 16 automated tests and TypeScript checks pass.
+Live model wording and prioritization vary. Preparation details may remain in descriptions instead of dedicated preparation cards. A deterministic guard added in `513ebc4` prevents stale model prose from reviving a resolved parent conflict. Live follow-up correctly reported Alex on dentist duty and Jamie on soccer duty. Marking the permission form complete then asking for urgency correctly recommended the electricity bill, excluding the completed form. Refresh restored the saved assignment. All 17 automated tests and TypeScript checks pass, and the production build succeeds. The full demo recording remains pending.
 
 ## Configure when ready
 
@@ -36,6 +36,6 @@ The extraction schema is currently scoped to this fixed May 2026 synthetic house
 
 ## Request bounds and costs
 
-Chat history is limited to 20,000 characters, with fixed output-token bounds (1,500 chat, 4,000 extraction). The SDK retries at most twice. Public Bedrock endpoints have a best-effort limit of ten requests per minute **per running process**; `BEDROCK_REQUEST_LIMIT_PER_MINUTE` changes it. Vercel can run multiple processes, so this is not a global quota or a hard spending cap. Configure appropriate AWS usage controls and billing alerts before enabling the public demo. AWS budget alerts notify you; they do not automatically stop all spending. Hackathon promotional credits were reported exhausted in the supplied October 7 update.
+Chat history is limited to 20,000 characters, with fixed output-token bounds (1,500 chat, 4,000 extraction). The SDK retries at most twice. Public Bedrock endpoints have a best-effort limit of ten requests per minute **per running process**; `BEDROCK_REQUEST_LIMIT_PER_MINUTE` changes it. Vercel can run multiple processes, so this is not a global quota or a hard spending cap. Configure appropriate AWS usage controls and billing alerts before enabling the public demo. AWS budget alerts notify you; they do not automatically stop all spending.
 
 To return to the mock, set `HOUSEHOLD_AI_PROVIDER=mock` and redeploy. When Bedrock is selected, failures are shown explicitly; the app does not silently substitute mock responses.
