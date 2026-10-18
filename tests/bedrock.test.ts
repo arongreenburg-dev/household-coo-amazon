@@ -37,3 +37,14 @@ test('malformed model output, truncation and invalid event data fail rather than
 });
 
 test('public Bedrock request limiter rejects excess requests and resets each minute',async()=>{const {takeBedrockRequest}=await import('../src/lib/request-budget');const now=1_000_000;for(let i=0;i<10;i++)assert.equal(takeBedrockRequest(now),true);assert.equal(takeBedrockRequest(now),false);assert.equal(takeBedrockRequest(now+60_000),true);});
+
+test('resolved parent conflicts override stale model interpretation',async()=>{
+ const {applyDecisions}=await import('../src/lib/decisions');
+ const state=applyDecisions(items,[{id:'dentist',resource:'Alex'}]);
+ const model=new BedrockModel('demo-model','us-east-1',async()=>response({content:'There is still a conflict.',sourceIds:['dentist','soccer']}));
+ const reply=await new BedrockAgentService(model).reply([{role:'user',content:'What conflicts do we have?'}],state);
+ assert.match(reply.content,/no overlapping parent assignments/);
+ assert.match(reply.content,/Alex is assigned to/);
+ assert.match(reply.content,/Jamie is assigned to/);
+ assert.doesNotMatch(reply.content,/still a conflict/);
+});
