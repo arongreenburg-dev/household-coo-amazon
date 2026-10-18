@@ -85,7 +85,7 @@ export class BedrockObligationExtractor implements ObligationExtractor {
      if(named.length)raw.person=named.length===1?named[0]:'Family';
     }
     if(typeof raw.priority==='string')raw.priority=({medium:'normal',urgent:'high'} as Record<string,string>)[raw.priority.toLowerCase()]??raw.priority.toLowerCase();
-    return {...raw,...(schedule?{...schedule,due:schedule.start}:{}),source:`${source.sender} · ${source.channel.toLowerCase()}`};
+    return {...raw,title:source.title,detail:source.body,...(schedule?{...schedule,due:schedule.start}:{}),source:`${source.sender} · ${source.channel.toLowerCase()}`};
    });
    const extracted=validateHouseholdItems(enriched);
    if(extracted.some(i=>i.id!==sourceItemIds[source.id]))throw new Error('Extraction refers to a different source.');
