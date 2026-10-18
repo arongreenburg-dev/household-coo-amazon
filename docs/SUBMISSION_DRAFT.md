@@ -13,7 +13,7 @@ Prepared from the rules and resources supplied by the entrant on October 10, 202
 - **New or existing:** New. Repository and implementation were created October 10, 2026, within the submission window. Entrant should confirm whether any earlier work needs disclosure.
 - **Existing-project updates:** N/A if confirmed new.
 - **File upload:** The copied form does not mark this field required. Source repository and testing link are supplied separately; upload an artifact only if requested by the current instructions. A video link is still required in the appropriate project details field.
-- **AWS Builder:** Pending live Bedrock verification. Do not claim completed AWS usage yet.
+- **AWS Builder:** Live Bedrock scan and source-cited chat verified October 18, 2026 using Amazon Nova Micro (`amazon.nova-micro-v1:0`) in `us-east-1`. See `docs/BEDROCK_SETUP.md` for evidence and remaining checks.
 - **AWS services description, AFTER live checks pass:** “Amazon Bedrock powers Household COO’s source extraction and conversational assistance. The server uses the AWS SDK for JavaScript and the Bedrock Converse API to read synthetic household emails, calendar entries, and documents, extract structured obligations with provenance, and answer follow-up questions using the current family plan. Deterministic logic checks parent scheduling overlaps. User decisions are saved locally and passed into later model requests. No personal accounts or external bookings are accessed.” Add the actual model/inference profile, region, and verified results.
 - **Open Source mini-challenge:** Undecided. Clarify whether this primary-track repository itself meets the separate contribution requirement; do not assume qualification. If entering, supply a qualifying contribution URL, repository URL, username `arongreenburg-dev`, and description. There is currently no open-source license in the repository.
 - **Friction log URL:** After this document update is published, https://github.com/arongreenburg-dev/household-coo-amazon/blob/main/docs/FRICTION_LOG.md
@@ -29,13 +29,13 @@ Household COO turns a family's scattered notices into a weekly action plan. In a
 
 The demo uses the synthetic Morgan household: Alex, Jamie, Ella (10), and Noah (7). Ten source notices include school correspondence, calendar entries, a dental appointment, a utility statement, and household reminders. No personal email, calendar, or Drive access is required.
 
-Current default mode uses fixture-based extraction and a deterministic agent. Amazon Bedrock code has been implemented but its live integration remains unverified until credentials, model access, and deployment settings are supplied. Update this paragraph only after successful live tests.
+The production deployment uses Amazon Bedrock Nova Micro for real extraction and source-cited conversation. A local checkout still defaults to mock mode without credentials. Live scanning of ten synthetic documents produced eight obligations and skipped two informational notices. Deterministic interval logic detects parent conflicts and local assignments resolve them. Model wording and prioritization can vary; dedicated preparation cards are not guaranteed on every extraction.
 
 ## Product feedback — factual draft
 
 ### 1. Tools, APIs, SDKs used and purpose
 
-Next.js and TypeScript for the browser app and server endpoints; React for the dashboard and chat; Lucide for icons; locally bundled DM Sans and Manrope fonts; Node's test runner and tsx for reasoning/provider tests; Playwright with Chromium for browser verification; Codex for development assistance; GitHub for version control; Google Cloud Shell for the entrant's initial preview; Vercel for hosted deployment connected to GitHub. The AWS SDK for JavaScript / Bedrock Runtime is implemented for optional real extraction and chat, but live usage is pending verification. The official MCP TypeScript SDK provides a real self-hosted Streamable HTTP server at `/api/mcp` and a browser MCP client, using protocol `2025-11-25`; tools reuse household reasoning and local decisions. We have not used Alexa hardware, an Alexa service API, Bee or Ring. See `docs/MCP.md` for implementation and protocol testing.
+Next.js and TypeScript for the browser app and server endpoints; React for the dashboard and chat; Lucide for icons; locally bundled DM Sans and Manrope fonts; Node's test runner and tsx for reasoning/provider tests; Playwright with Chromium for browser verification; Codex for development assistance; GitHub for version control; Google Cloud Shell for the entrant's initial preview; Vercel for hosted deployment connected to GitHub. The AWS SDK for JavaScript / Bedrock Runtime and Converse API power verified production extraction and chat through Amazon Nova Micro in us-east-1. The official MCP TypeScript SDK provides a real self-hosted Streamable HTTP server at `/api/mcp` and a browser MCP client, using protocol `2025-11-25`; tools reuse household reasoning and local decisions. We have not used Alexa hardware, an Alexa service API, Bee or Ring. See `docs/MCP.md` for implementation and protocol testing.
 
 ### 2. What worked well
 
@@ -61,7 +61,7 @@ Proposed answer for entrant confirmation: “Yes, I would use Next.js, GitHub an
 
 - [ ] Confirm personal eligibility and actual residence.
 - [ ] Confirm repository visibility and license or private judge access.
-- [ ] Configure and verify live Bedrock; then finalize AWS mini-challenge answer.
+- [x] Configure live Bedrock and verify production scan, chat, citations and assignment; finish remaining multi-turn checks before recording.
 - [ ] Verify the production website after deployment and record its exact tested version.
 - [ ] Review factual written description and feedback.
 - [ ] Record and publicly upload an English demo video shorter than three minutes.
