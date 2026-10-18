@@ -48,3 +48,15 @@ test('resolved parent conflicts override stale model interpretation',async()=>{
  assert.match(reply.content,/Jamie is assigned to/);
  assert.doesNotMatch(reply.content,/still a conflict/);
 });
+
+test('scheduled intervals use source PM times and changed notices rather than model guesses',async()=>{
+ const source={...demoSources.find(d=>d.id==='dental-notice')!,body:'Noah is scheduled May 21, 5:30–6:15 PM. Your booking lists Alex Morgan as the accompanying parent.'};
+ const guessed={...items.find(i=>i.id==='dentist')!,start:'2026-05-20T03:30:00',end:'2026-05-20T04:15:00',prepare:null};
+ const model=new BedrockModel('demo-model','us-east-1',async()=>response({results:[{sourceId:source.id,items:[guessed]}]}));
+ const [event]=await new BedrockObligationExtractor(model).extract(source);
+ assert.equal(event.start,'2026-05-21T17:30:00');
+ assert.equal(event.end,'2026-05-21T18:15:00');
+ assert.equal(event.due,event.start);
+ assert.equal(event.resource,'Alex');
+ assert.equal(event.prepare,undefined);
+});
