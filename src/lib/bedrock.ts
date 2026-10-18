@@ -38,7 +38,7 @@ export class BedrockModel {
  private transport:ConverseTransport;
  constructor(private modelId:string,region:string,transport?:ConverseTransport){
   if(!modelId||!region)throw new Error('Bedrock requires AWS_REGION and BEDROCK_MODEL_ID.');
-  const client=transport?undefined:new BedrockRuntimeClient({region,maxAttempts:2,...(process.env.AWS_BEARER_TOKEN_BEDROCK?{authSchemePreference:['smithy.api#httpBearerAuth']}:{})});
+  const client=transport?undefined:new BedrockRuntimeClient({region,maxAttempts:2,...(process.env.AWS_BEARER_TOKEN_BEDROCK?{authSchemePreference:['httpBearerAuth'],token:{token:process.env.AWS_BEARER_TOKEN_BEDROCK}}:{})});
   this.transport=transport??(input=>client!.send(new ConverseCommand(input),{abortSignal:AbortSignal.timeout(45000)}));
  }
  async json(system:string,payload:unknown,maxTokens:number):Promise<unknown>{
