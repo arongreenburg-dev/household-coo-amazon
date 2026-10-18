@@ -29,6 +29,11 @@ test('malformed model output, truncation and invalid event data fail rather than
  const truncated=new BedrockModel('demo-model','us-east-1',async()=>({...response({}),stopReason:'max_tokens'}));await assert.rejects(truncated.json('system',{},100),/incomplete/);
  assert.throws(()=>validateHouseholdItems([{...items[1],end:items[1].start}]),/interval/);
  assert.throws(()=>validateHouseholdItems([{...items[0],person:'Unknown'}]),/classification/);
+ for(const id of ['dentist','soccer']){
+  const event={...items.find(item=>item.id===id)!};
+  delete event.start;delete event.end;delete event.resource;
+  assert.throws(()=>validateHouseholdItems([event]),/parent/);
+ }
 });
 
 test('public Bedrock request limiter rejects excess requests and resets each minute',async()=>{const {takeBedrockRequest}=await import('../src/lib/request-budget');const now=1_000_000;for(let i=0;i<10;i++)assert.equal(takeBedrockRequest(now),true);assert.equal(takeBedrockRequest(now),false);assert.equal(takeBedrockRequest(now+60_000),true);});
