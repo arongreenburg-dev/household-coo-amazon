@@ -81,7 +81,7 @@ export class BedrockObligationExtractor implements ObligationExtractor {
     const raw={...item as Record<string,unknown>};
     for(const key of ['prepare','start','end','resource'])if(raw[key]===null)delete raw[key];
     if(typeof raw.person==='string'&&!['Alex','Jamie','Ella','Noah','Family'].includes(raw.person)){
-     const named=['Alex','Jamie','Ella','Noah'].filter(name=>new RegExp('\\\\b'+name+'\\\\b','i').test(raw.person as string));
+     const named=['Alex','Jamie','Ella','Noah'].filter(name=>(raw.person as string).toLowerCase().split(/[^a-z]+/).includes(name.toLowerCase()));
      if(named.length)raw.person=named.length===1?named[0]:'Family';
     }
     if(typeof raw.priority==='string')raw.priority=({medium:'normal',urgent:'high'} as Record<string,string>)[raw.priority.toLowerCase()]??raw.priority.toLowerCase();
