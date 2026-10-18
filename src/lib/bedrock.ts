@@ -80,6 +80,11 @@ export class BedrockObligationExtractor implements ObligationExtractor {
    const enriched=entry.items.map(item=>{
     const raw={...item as Record<string,unknown>};
     for(const key of ['prepare','start','end','resource'])if(raw[key]===null)delete raw[key];
+    if(typeof raw.person==='string'&&!['Alex','Jamie','Ella','Noah','Family'].includes(raw.person)){
+     const named=['Alex','Jamie','Ella','Noah'].filter(name=>new RegExp('\\\\b'+name+'\\\\b','i').test(raw.person as string));
+     if(named.length)raw.person=named.length===1?named[0]:'Family';
+    }
+    if(typeof raw.priority==='string')raw.priority=({medium:'normal',urgent:'high'} as Record<string,string>)[raw.priority.toLowerCase()]??raw.priority.toLowerCase();
     return {...raw,...(schedule?{...schedule,due:schedule.start}:{}),source:`${source.sender} · ${source.channel.toLowerCase()}`};
    });
    const extracted=validateHouseholdItems(enriched);
