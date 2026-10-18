@@ -60,3 +60,11 @@ test('scheduled intervals use source PM times and changed notices rather than mo
  assert.equal(event.resource,'Alex');
  assert.equal(event.prepare,undefined);
 });
+
+test('extraction normalizes combined family members and medium priority without accepting unknown people',async()=>{
+ const source=demoSources.find(d=>d.id==='library-reminder')!;
+ const make=(person:string)=>new BedrockObligationExtractor(new BedrockModel('demo-model','us-east-1',async()=>response({results:[{sourceId:source.id,items:[{...items.find(i=>i.id==='library')!,person,priority:'medium',prepare:null}]}]})));
+ const [item]=await make('Ella and Noah').extract(source);
+ assert.equal(item.person,'Family');assert.equal(item.priority,'normal');
+ await assert.rejects(make('Unknown').extract(source),/classification/);
+});
