@@ -1,8 +1,10 @@
-# Amazon Bedrock setup — pending live validation
+# Amazon Bedrock setup — live production verification
 
 The application now includes server-side Amazon Bedrock SDK integration for **both chat and obligation extraction**, via `BedrockRuntimeClient` and `ConverseCommand`. The extractor batches ten synthetic documents into one request. The mock remains the default and does not call AWS.
 
-**Status:** SDK request construction, output validation, provenance, and error handling are tested with stubbed transport responses. No live AWS request has been verified. Do not claim a working AWS integration in the submission until the live checks below pass.
+**Status (October 18, 2026):** Live production scan and chat verified at https://household-coo-amazon.vercel.app/ using Amazon Nova Micro (`amazon.nova-micro-v1:0`) in `us-east-1`. Ten synthetic sources produced eight obligations and skipped two informational notices. Requiring complete appointment intervals restored detection of the 15-minute overlap; an explicit Alex dentist assignment resolved the dashboard conflict. Chat supplied source citations. Authentication fix: `539d8bc`; extraction validation: `303c901`; regression case: `2bf661f`.
+
+Live model wording and prioritization vary. Preparation details may remain in descriptions instead of dedicated preparation cards. The conflict follow-up still described overlapping event times as a conflict despite the reassignment; this response needs correction before recording. Remaining checks include completed-task follow-up and full multi-turn recording. The existing 16 automated tests and TypeScript checks pass.
 
 ## Configure when ready
 
