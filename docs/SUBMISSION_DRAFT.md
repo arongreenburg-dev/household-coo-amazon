@@ -1,6 +1,6 @@
 # Household COO — Devpost working draft
 
-Prepared from the rules and resources supplied by the entrant on October 10, 2026. This is a draft, not a submitted entry. Recheck the current official rules before submission. Deadline: October 23, 2026, noon Pacific / 2 PM Central.
+Prepared from the rules and resources supplied by the entrant on October 10, 2026. This is a draft, not a submitted entry. Current Devpost form and saved submission were reviewed October 22, 2026. Deadline: October 23, 2026, noon Pacific / 2 PM Central.
 
 ## Additional info fields
 
@@ -15,7 +15,7 @@ Prepared from the rules and resources supplied by the entrant on October 10, 202
 - **File upload:** The copied form does not mark this field required. Source repository and testing link are supplied separately; upload an artifact only if requested by the current instructions. A video link is still required in the appropriate project details field.
 - **AWS Builder:** Live Bedrock scan and source-cited chat verified October 18, 2026 using Amazon Nova Micro (`amazon.nova-micro-v1:0`) in `us-east-1`. See `docs/BEDROCK_SETUP.md` for evidence and remaining checks.
 - **AWS services description, AFTER live checks pass:** “Amazon Bedrock powers Household COO’s source extraction and conversational assistance. The server uses the AWS SDK for JavaScript and the Bedrock Converse API to read synthetic household emails, calendar entries, and documents, extract structured obligations with provenance, and answer follow-up questions using the current family plan. Deterministic logic checks parent scheduling overlaps. User decisions are saved locally and passed into later model requests. No personal accounts or external bookings are accessed.” Add the actual model/inference profile, region, and verified results.
-- **Open Source mini-challenge:** Undecided. Clarify whether this primary-track repository itself meets the separate contribution requirement; do not assume qualification. If entering, supply a qualifying contribution URL, repository URL, username `arongreenburg-dev`, and description. There is currently no open-source license in the repository.
+- **Open Source mini-challenge:** No, as saved in Devpost. There is currently no open-source license in the repository; the required repository license/judge-access decision remains separate from this optional mini-challenge.
 - **Friction log URL:** After this document update is published, https://github.com/arongreenburg-dev/household-coo-amazon/blob/main/docs/FRICTION_LOG.md
 - **Eligibility checkboxes:** Entrant must personally confirm age, jurisdiction, and affiliation statements. This draft does not attest to them.
 
@@ -39,19 +39,19 @@ Next.js and TypeScript for the browser app and server endpoints; React for the d
 
 ### 2. What worked well
 
-Next.js provided a single project for UI and API endpoints. TypeScript supported separate household, source, reasoning and provider contracts. Tests verified grouping, conflict detection, state-aware conversations, and provider response validation. Local fonts avoided a runtime font-service dependency. GitHub-to-Vercel deployment replaced manual Cloud Shell update commands. Synthetic sources made the project demonstrable without personal-account access. Add Bedrock-specific feedback only after actual use.
+Next.js provided a single project for UI and API endpoints. TypeScript supported separate household, source, reasoning and provider contracts. Tests verified grouping, conflict detection, state-aware conversations, and provider response validation. Local fonts avoided a runtime font-service dependency. GitHub-to-Vercel deployment replaced manual Cloud Shell update commands. Synthetic sources made the project demonstrable without personal-account access. Live Bedrock feedback and integration observations are now documented in `docs/FRICTION_LOG.md` and saved in Devpost.
 
 ### 3. What needs work
 
-A new Chromebook user needed detailed guidance for terminals, file transfer and web previews. Chat attachment downloads did not work for the entrant, so GitHub cloning was used. Browser extensions injected root-element attributes and triggered development hydration warnings; suppression was restricted to the outer HTML/body elements. Initial low-contrast, small text was improved after user feedback. These observations concern our app/workflow, not tested defects in Amazon developer tools. Bedrock-specific feedback is pending actual onboarding and use.
+A new Chromebook user needed detailed guidance for terminals, file transfer and web previews. Chat attachment downloads did not work for the entrant, so GitHub cloning was used. Browser extensions injected root-element attributes and triggered development hydration warnings; suppression was restricted to the outer HTML/body elements. Initial low-contrast, small text was improved after user feedback. These observations concern our app/workflow, not tested defects in Amazon developer tools. Live onboarding, authentication, output-validation and current-state observations are documented in `docs/FRICTION_LOG.md`.
 
 ### 4. Onboarding experience
 
-The entrant progressed from a README-only repository to a deployed demo. The initial Cloud Shell preview required several terminal commands, followed by a one-time Vercel/GitHub connection for automatic deployment. Browser and accessibility feedback drove improvements. AWS onboarding has not yet been completed; document that experience after setup.
+The entrant progressed from a README-only repository to a deployed demo. The initial Cloud Shell preview required several terminal commands, followed by a one-time Vercel/GitHub connection for automatic deployment. Browser and accessibility feedback drove improvements. AWS account activation and Bedrock setup were completed; production extraction and conversation were verified October 18 and October 22. Actual onboarding feedback is saved in Devpost.
 
 ### 5. Would you build with these devices and services again?
 
-Proposed answer for entrant confirmation: “Yes, I would use Next.js, GitHub and Vercel again for rapid browser prototyping. This workflow let me demonstrate a household coordination idea on a Chromebook without installing a local toolchain. I will give a separate recommendation for Amazon Bedrock after completing and testing its integration.” Do not claim experience with Amazon devices/services that were not used.
+Proposed answer for entrant confirmation: “Yes, I would use Amazon Bedrock again for this focused text-based household workflow, with output validation and deterministic scheduling checks alongside the model. I would also reuse Next.js, TypeScript, MCP, GitHub and Vercel for browser-based development and deployment.” Do not claim experience with Amazon devices/services that were not used.
 
 ## Optional feature request draft
 
@@ -59,12 +59,12 @@ Proposed answer for entrant confirmation: “Yes, I would use Next.js, GitHub an
 
 ## Submission checklist
 
-- [ ] Confirm personal eligibility and actual residence.
+- [x] Devpost residence and eligibility fields are completed by the entrant; saved form reviewed October 22.
 - [ ] Confirm repository visibility and license or private judge access.
-- [x] Configure live Bedrock and verify production scan, chat, citations and assignment; finish remaining multi-turn checks before recording.
-- [ ] Verify the production website after deployment and record its exact tested version.
-- [ ] Review factual written description and feedback.
-- [ ] Record and publicly upload an English demo video shorter than three minutes.
-- [ ] Complete required Devpost fields and review preview.
+- [x] Configure live Bedrock and verify production scan, chat, citations, assignment and multi-turn checks.
+- [x] Verify production website: application commit `1a5e48ddffd1cd330c916529700f7fba7e023360`; deployment Ready; live scans and recorded walkthrough successful October 22.
+- [x] Review factual written description and feedback; current 21-test count and testing instructions saved in Devpost.
+- [x] Public English demo video (1:47): https://youtu.be/XYiC3sc6x5w .
+- [x] Required Devpost content fields saved, including video, gallery captions, app/repository links and testing instructions. Devpost shows 4/5 steps done; final agreement is unchecked.
 - [ ] Entrant submits before October 23, 2 PM Central.
 - [ ] Maintain judge access through the end of judging, November 20, 2026.
