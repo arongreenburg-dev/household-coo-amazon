@@ -85,7 +85,7 @@ Show the fixed-week dashboard, ask the core question, explain the dentist/soccer
 - [Observed development friction](docs/FRICTION_LOG.md)
 - [Bedrock setup and live verification checklist](docs/BEDROCK_SETUP.md)
 
-The Alexa+ submission uses the permitted simulated-browser-experience path. A real self-hosted MCP server and simulated Alexa+ MCP client are implemented using Streamable HTTP. We have not connected real email, calendar, Drive, or Alexa hardware. See [MCP documentation](docs/MCP.md). Live Amazon Bedrock integration is documented in [Bedrock setup](docs/BEDROCK_SETUP.md); the Devpost draft enters the AWS Builder mini-challenge. An open-source license or the required private judge access is still outstanding; no license has been selected automatically.
+The Alexa+ submission uses the permitted simulated-browser-experience path. A real self-hosted MCP server and simulated Alexa+ MCP client are implemented using Streamable HTTP. We have not connected real email, calendar, Drive, or Alexa hardware. See [MCP documentation](docs/MCP.md). Live Amazon Bedrock integration is documented in [Bedrock setup](docs/BEDROCK_SETUP.md); the Devpost draft enters the AWS Builder mini-challenge. The public repository is licensed under the [MIT License](LICENSE), copyright 2026 Aron Greenburg, added with the entrant’s approval on October 22, 2026.
 
 ## Production verification — October 22, 2026
 
@@ -95,4 +95,4 @@ The Alexa+ submission uses the permitted simulated-browser-experience path. A re
 - 21 automated tests and TypeScript checks passed. The production deployment was Ready.
 - Invalid or incomplete extraction receives one bounded repair attempt; persistent failures leave the current plan unchanged and display a retry message. Authentication failures are not retried by that repair logic.
 - Public demo video: https://youtu.be/XYiC3sc6x5w (1:47).
-- Submission remains a draft until the entrant accepts the final terms and submits. Repository license/judge access remains unresolved.
+- Submission remains a draft until the entrant accepts the final terms and submits. The public repository includes a complete MIT License.
