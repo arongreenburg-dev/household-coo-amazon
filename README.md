@@ -44,7 +44,7 @@ The Morgan household includes parents Alex and Jamie, Ella (10), and Noah (7). E
 - `src/lib/bedrock.ts`: optional Bedrock Converse-backed chat and batched source extraction, with validated structured output and source provenance.
 - `src/lib/services.ts`: selects mock or Bedrock using server environment configuration.
 - `src/lib/agent.ts`: `AgentService` interface and deterministic `MockAgentService`. The mock recognizes supported conversational intents and uses preceding assistant recommendations for follow-up explanations.
-- `src/app/api/chat/route.ts`: validated, server-side chat endpoint. Replace the `agent` implementation with an `AgentService` provider to add a real LLM later; keep credentials and calls server-side. Pass local source records and conversation history to your provider and validate its output.
+- `src/app/api/chat/route.ts`: validated, server-side chat endpoint. The selected `AgentService` provides either deterministic mock responses or live Bedrock responses. Credentials and calls stay server-side; local source records and conversation history ground provider requests, and output is validated.
 - `src/app/api/mcp/route.ts`: stateless Streamable HTTP endpoint using the official MCP SDK (protocol `2025-11-25`).
 - `src/lib/mcp/server.ts`: tools that reuse household reasoning, decisions, and the selected agent.
 - `src/lib/mcp/client.ts`: browser MCP client for plan loading, chat, reassignment, completion, and undo.
@@ -52,7 +52,7 @@ The Morgan household includes parents Alex and Jamie, Ella (10), and Noah (7). E
 - `src/components/dashboard.tsx`: responsive dashboard, family filters, notice details, navigation, chat, loading/error states, and source citations.
 - `tests/agent.test.ts`: meaningful checks for classification, conflict resolution, main conversational flow, and unsupported actions.
 
-All source data is synthetic. Conversations live in browser memory and reset on reload. Completed tasks and parent assignments persist in local browser storage; they are not shared across devices. Extracted source text is not persisted: a page reload restores the baseline synthetic records with the saved decisions. Scanning again preserves those decisions. The mock is a constrained simulation, not a general-purpose model or Alexa integration. Bedrock mode is implemented but has not yet been tested against a live AWS account. Avoid entering real sensitive household data. No real account connector or actual Alexa skill is included. The demo connector reads local fixtures only. Gmail, Google Calendar, Drive, drafts, and attachments are not accessed. Real connections should be optional: keep the demo available without signing in, and add an authorized read-only connection flow as a separate integration.
+All source data is synthetic. Conversations live in browser memory and reset on reload. Completed tasks and parent assignments persist in local browser storage; they are not shared across devices. Extracted source text is not persisted: a page reload restores the baseline synthetic records with the saved decisions. Scanning again preserves those decisions. The mock is a constrained simulation, not a general-purpose model or Alexa integration. Live production Bedrock extraction and chat were verified on October 18 and October 22, 2026. Avoid entering real sensitive household data. No real account connector or actual Alexa skill is included. The demo connector reads local fixtures only. Gmail, Google Calendar, Drive, drafts, and attachments are not accessed. Real connections should be optional: keep the demo available without signing in, and add an authorized read-only connection flow as a separate integration.
 
 ## Deploy
 
@@ -85,4 +85,14 @@ Show the fixed-week dashboard, ask the core question, explain the dentist/soccer
 - [Observed development friction](docs/FRICTION_LOG.md)
 - [Bedrock setup and live verification checklist](docs/BEDROCK_SETUP.md)
 
-The Alexa+ submission uses the permitted simulated-browser-experience path. A real self-hosted MCP server and simulated Alexa+ MCP client are implemented using Streamable HTTP. We have not connected real email, calendar, Drive, or Alexa hardware. See [MCP documentation](docs/MCP.md). AWS mini-challenge eligibility remains pending live Bedrock verification. An open-source license or the required private judge access is still outstanding; no license has been selected automatically.
+The Alexa+ submission uses the permitted simulated-browser-experience path. A real self-hosted MCP server and simulated Alexa+ MCP client are implemented using Streamable HTTP. We have not connected real email, calendar, Drive, or Alexa hardware. See [MCP documentation](docs/MCP.md). Live Amazon Bedrock integration is documented in [Bedrock setup](docs/BEDROCK_SETUP.md); the Devpost draft enters the AWS Builder mini-challenge. An open-source license or the required private judge access is still outstanding; no license has been selected automatically.
+
+## Production verification — October 22, 2026
+
+- Tested production URL: https://household-coo-amazon.vercel.app/
+- Verified production commit: `1a5e48ddffd1cd330c916529700f7fba7e023360` (application code).
+- Live Nova Micro scans returned ten sources, eight obligations, and two informational notices. The recorded walkthrough demonstrates scan, source inspection, urgency chat, and conflict resolution by parent reassignment.
+- 21 automated tests and TypeScript checks passed. The production deployment was Ready.
+- Invalid or incomplete extraction receives one bounded repair attempt; persistent failures leave the current plan unchanged and display a retry message. Authentication failures are not retried by that repair logic.
+- Public demo video: https://youtu.be/XYiC3sc6x5w (1:47).
+- Submission remains a draft until the entrant accepts the final terms and submits. Repository license/judge access remains unresolved.
