@@ -5,6 +5,22 @@ import {items} from '../src/lib/household';
 import {demoSources,scanSources,DemoSourceConnector,MockObligationExtractor} from '../src/lib/sources';
 import type {ConverseCommandInput,ConverseCommandOutput} from '@aws-sdk/client-bedrock-runtime';
 const response=(json:unknown):ConverseCommandOutput=>({$metadata:{},usage:{inputTokens:1,outputTokens:1,totalTokens:2},metrics:{latencyMs:1},output:{message:{role:'assistant',content:[{text:JSON.stringify(json)}]}},stopReason:'end_turn'});
+test('scan retries a missing explanation once and returns only validated live output',async()=>{
+ const source=demoSources.find(d=>d.id==='school-form')!;const item=items.find(i=>i.id==='permission')!;let calls=0;
+ const model=new BedrockModel('demo-model','us-east-1',async input=>{
+  calls++;if(calls===2)assert.match(input.system![0].text!,/previous response failed validation/);
+  return response({results:[{sourceId:source.id,items:[calls===1?{...item,reason:null}:item]}]});
+ });
+ const [extracted]=await new BedrockObligationExtractor(model).extract(source);
+ assert.equal(calls,2);assert.equal(extracted.reason,item.reason);
+});
+test('scan stops after two invalid outputs and does not retry credential failures',async()=>{
+ const source=demoSources.find(d=>d.id==='school-form')!;let calls=0;
+ const invalid=new BedrockModel('demo-model','us-east-1',async()=>{calls++;return response({results:[{sourceId:source.id,items:[{...items[0],reason:null}]}]});});
+ await assert.rejects(new BedrockObligationExtractor(invalid).extract(source),/reason/);assert.equal(calls,2);
+ calls=0;const denied=new BedrockModel('demo-model','us-east-1',async()=>{calls++;throw new Error('Access denied');});
+ await assert.rejects(new BedrockObligationExtractor(denied).extract(source),/Access denied/);assert.equal(calls,1);
+});
 test('Bedrock chat sends current plan and conversation through Converse, validates citations',async()=>{
  const requests:ConverseCommandInput[]=[];
  const model=new BedrockModel('demo-model','us-east-1',async input=>{requests.push(input);return response({content:'Alex can cover the dentist. The conflict is resolved in your demo plan.',sourceIds:['dentist','soccer']});});
