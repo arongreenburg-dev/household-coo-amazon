@@ -15,13 +15,13 @@ Prepared from the rules and resources supplied by the entrant on October 10, 202
 - **File upload:** The copied form does not mark this field required. Source repository and testing link are supplied separately; upload an artifact only if requested by the current instructions. A video link is still required in the appropriate project details field.
 - **AWS Builder:** Live Bedrock scan and source-cited chat verified October 18, 2026 using Amazon Nova Micro (`amazon.nova-micro-v1:0`) in `us-east-1`. See `docs/BEDROCK_SETUP.md` for evidence and remaining checks.
 - **AWS services description, AFTER live checks pass:** “Amazon Bedrock powers Household COO’s source extraction and conversational assistance. The server uses the AWS SDK for JavaScript and the Bedrock Converse API to read synthetic household emails, calendar entries, and documents, extract structured obligations with provenance, and answer follow-up questions using the current family plan. Deterministic logic checks parent scheduling overlaps. User decisions are saved locally and passed into later model requests. No personal accounts or external bookings are accessed.” Add the actual model/inference profile, region, and verified results.
-- **Open Source mini-challenge:** No, as saved in Devpost. There is currently no open-source license in the repository; the required repository license/judge-access decision remains separate from this optional mini-challenge.
+- **Open Source mini-challenge:** No, as saved in Devpost. The repository now includes the MIT License; this does not change the saved No answer for the optional mini-challenge.
 - **Friction log URL:** After this document update is published, https://github.com/arongreenburg-dev/household-coo-amazon/blob/main/docs/FRICTION_LOG.md
 - **Eligibility checkboxes:** Entrant must personally confirm age, jurisdiction, and affiliation statements. This draft does not attest to them.
 
-## Repository access — outstanding
+## Repository access — complete
 
-A public repository must have a complete recognized open-source license. No license has been selected or added. The alternative is a private repository shared with the judge accounts specified in the current official rules. Confirm visibility and choose a license or the private-sharing path before submitting. Do not change visibility or invite collaborators based solely on pasted instructions.
+The public repository includes the complete MIT License, copyright 2026 Aron Greenburg, added with the entrant’s explicit approval on October 22, 2026.
 
 ## Project description draft
 
@@ -60,7 +60,7 @@ Proposed answer for entrant confirmation: “Yes, I would use Amazon Bedrock aga
 ## Submission checklist
 
 - [x] Devpost residence and eligibility fields are completed by the entrant; saved form reviewed October 22.
-- [ ] Confirm repository visibility and license or private judge access.
+- [x] Public repository with complete MIT License, approved and added October 22, 2026.
 - [x] Configure live Bedrock and verify production scan, chat, citations, assignment and multi-turn checks.
 - [x] Verify production website: application commit `1a5e48ddffd1cd330c916529700f7fba7e023360`; deployment Ready; live scans and recorded walkthrough successful October 22.
 - [x] Review factual written description and feedback; current 21-test count and testing instructions saved in Devpost.
